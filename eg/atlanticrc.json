@@ -7,7 +7,7 @@
     ],
     "master": {
         "conf": "/srv/monomoy/config.json",
-        "host": "lucifer.pault.ag",
+        "host": "localhost",
         "key": "/home/tag/.ssh/tag",
         "login": "tag",
         "monomoy": "monomoy"
