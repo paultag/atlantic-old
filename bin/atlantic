@@ -1,0 +1,35 @@
+#!/bin/bash
+
+$(atlantic-env)
+# OK, this exports some key stuff.
+
+WORKDIR=$(mktemp -d)
+cd $WORKDIR
+echo "I: Working in $WORKDIR"
+echo "I:"
+echo "I: Requesting the next build from the remote."
+
+atlantic-ssh $MONOMOY_BINARY builder-peek $MONOMOY_BUILDER_NAME > job
+atlantic-job-sanity job
+SANE=$?
+
+if [ $SANE -ne 0 ]; then
+    echo "E: Insane job spec. Quitting."
+    echo "E: Full dump follows"
+    echo "E:"
+    echo "E: Sanity code: $SANE"
+    echo "E:"
+    echo "I: File info:"
+    ls -l job
+    echo "I: Contents:"
+    cat job
+    exit 1
+fi
+
+$(atlantic-env job)
+# Re-export with the goodies.
+CHROOT_ID="${ATLANTIC_SUITE}-${ATLANTIC_ARCH}-${ATLANTIC_COMPILER}"
+echo $CHROOT_ID
+
+cd - > /dev/null
+rm -rf $WORKDIR
