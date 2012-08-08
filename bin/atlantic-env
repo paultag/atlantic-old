@@ -12,6 +12,7 @@ env_mapping = {
     "ATLANTIC_MASTER": master['host'],
     "ATLANTIC_LOGIN": master['login'],
     "ATLANTIC_KEY": master['key'],
+    "MONOMOY_DGET": master['dget'],
     "MONOMOY_BINARY": master['monomoy'],
     "MONOMOY_CONF": master['conf'],
     "MONOMOY_BUILDER_NAME": obj['name']
@@ -34,7 +35,11 @@ if len(sys.argv) > 1:
     env_mapping.update({
         "ATLANTIC_COMPILER": compiler,
         "ATLANTIC_SUITE": dist,
-        "ATLANTIC_ARCH": arch
+        "ATLANTIC_ARCH": arch,
+        "ATLANTIC_BUILD_DSC": bld['dsc'],
+        "ATLANTIC_BUILD_POOL": bld['pool'],
+        "ATLANTIC_BUILD_SET": bld['build'],
+        "ATLANTIC_BUILD_ID": bld['_id']
     })
 
 

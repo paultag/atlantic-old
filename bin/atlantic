@@ -29,7 +29,32 @@ fi
 $(atlantic-env job)
 # Re-export with the goodies.
 CHROOT_ID="${ATLANTIC_SUITE}-${ATLANTIC_ARCH}-${ATLANTIC_COMPILER}"
-echo $CHROOT_ID
+dget -x $MONOMOY_DGET/$ATLANTIC_BUILD_DSC
+
+echo "I:"
+echo "I: Suite:    $ATLANTIC_SUITE"
+echo "I: Arch:     $ATLANTIC_ARCH"
+echo "I: Compiler: $ATLANTIC_COMPILER"
+echo "I:"
+
+sbuild -d $ATLANTIC_SUITE -c $CHROOT_ID -A *dsc
+SANE=$?
+
+find . -type l -delete
+
+mv *build ${CHROOT_ID}.build.txt
+echo "$CHROOT_ID $SANE" > ${CHROOT_ID}.exit.txt
+
+ROOT=$(atlantic-ssh $MONOMOY_BINARY get-key $MONOMOY_CONF results)
+ROOT=$(echo $ROOT | tr -d "\"")
+
+PTH=${ROOT}/${ATLANTIC_BUILD_POOL}
+
+atlantic-ssh mkdir -p $PTH
+atlantic-scp ${CHROOT_ID}.build.txt $PTH
+atlantic-scp ${CHROOT_ID}.exit.txt $PTH
 
 cd - > /dev/null
 rm -rf $WORKDIR
+
+exit $SANE
