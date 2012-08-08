@@ -9,7 +9,7 @@ echo "I: Working in $WORKDIR"
 echo "I:"
 echo "I: Requesting the next build from the remote."
 
-atlantic-ssh $MONOMOY_BINARY builder-peek $MONOMOY_BUILDER_NAME > job
+atlantic-ssh $MONOMOY_BINARY builder-take $MONOMOY_BUILDER_NAME > job
 atlantic-job-sanity job
 SANE=$?
 
@@ -51,8 +51,13 @@ ROOT=$(echo $ROOT | tr -d "\"")
 PTH=${ROOT}/${ATLANTIC_BUILD_POOL}
 
 atlantic-ssh mkdir -p $PTH
-atlantic-scp ${CHROOT_ID}.build.txt $PTH
-atlantic-scp ${CHROOT_ID}.exit.txt $PTH
+
+
+for fd in ${CHROOT_ID}.build.txt ${CHROOT_ID}.exit.txt; do
+    scp -i $ATLANTIC_KEY $fd $ATLANTIC_LOGIN@$ATLANTIC_MASTER:$PTH
+done
+
+atlantic-ssh $MONOMOY_BINARY builder-done $ATLANTIC_BUILD_ID
 
 cd - > /dev/null
 rm -rf $WORKDIR
