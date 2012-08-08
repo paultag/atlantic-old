@@ -24,6 +24,8 @@ if [ $SANE -ne 0 ]; then
     echo "I: Contents:"
     cat job
     exit 1
+else
+    echo "I: OK. Moving on with the build. - Sane: #$SANE"
 fi
 
 $(atlantic-env job)
