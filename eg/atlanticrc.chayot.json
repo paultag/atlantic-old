@@ -1,0 +1,19 @@
+{
+    "arches": [
+        "x86_64"
+    ],
+    "compilers": [
+        "gcc"
+    ],
+    "master": {
+        "conf": "/srv/monomoy/config.json",
+        "host": "lucifer.pault.ag",
+        "key": "/home/tag/.ssh/tag",
+        "login": "tag",
+        "monomoy": "monomoy"
+    },
+    "name": "chayot",
+    "suites": [
+        "precise"
+    ]
+}
