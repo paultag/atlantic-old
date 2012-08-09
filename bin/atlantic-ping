@@ -1,0 +1,5 @@
+#!/bin/bash
+
+$(atlantic-env)
+
+atlantic-ssh $MONOMOY_BINARY builder-ping $MONOMOY_BUILDER_NAME
