@@ -1,0 +1,10 @@
+#!/bin/bash
+
+while [ 1 ]; do
+    atlantic
+    RET=$?
+    if [ $RET -ne 0 ]; then
+        echo "Sleeping."
+        sleep 120
+    fi
+done
