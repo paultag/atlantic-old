@@ -1,0 +1,6 @@
+bin/atlantic                /usr/bin
+bin/atlanticd               /usr/bin
+bin/atlantic-env            /usr/bin
+bin/atlantic-ssh            /usr/bin
+bin/atlantic-ping           /usr/bin
+bin/atlantic-job-sanity     /usr/bin
