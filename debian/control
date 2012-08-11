@@ -1,0 +1,15 @@
+Source: atlantic
+Section: web
+Priority: optional
+Maintainer: Paul Tagliamonte <paultag@debian.org>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.3
+Homepage: http://pault.ag/
+
+Package: atlantic
+Architecture: all
+Depends: ${shlibs:Depends}, ${misc:Depends}
+Description: atlantic buildd stuff
+ kruft
+ kruft
+ kruft
