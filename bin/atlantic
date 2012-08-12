@@ -39,13 +39,15 @@ echo "I: Arch:     $ATLANTIC_ARCH"
 echo "I: Compiler: $ATLANTIC_COMPILER"
 echo "I:"
 
-sbuild -d $ATLANTIC_SUITE -c $CHROOT_ID -A *dsc
+sbuild -d $ATLANTIC_SUITE -c $CHROOT_ID -A *dsc 2> stderr
 SANE=$?
 
-find . -type l -delete
+BUILD_LOG=$(readlink `find . -type l`)
 
-mv *build ${CHROOT_ID}.build.txt
+mv $BUILD_LOG ${CHROOT_ID}.build.txt
 echo "$CHROOT_ID $SANE" > ${CHROOT_ID}.exit.txt
+
+atlantic-parse-buildlog $BUILD_LOG > ${CHROOT_ID}.report
 
 ROOT=$(atlantic-ssh $MONOMOY_BINARY get-key $MONOMOY_CONF results)
 ROOT=$(echo $ROOT | tr -d "\"")
