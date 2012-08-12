@@ -33,7 +33,7 @@ lookfor = {
 }
 
 false_pos = {
-    "error": ["-werror"]
+    "error": ["-werror", "libgpg-error0"]
 }
 
 flag = 3
