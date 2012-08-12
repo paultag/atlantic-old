@@ -4,3 +4,4 @@ bin/atlantic-env            /usr/bin
 bin/atlantic-ssh            /usr/bin
 bin/atlantic-ping           /usr/bin
 bin/atlantic-job-sanity     /usr/bin
+bin/atlantic-parse-buildlog /usr/bin

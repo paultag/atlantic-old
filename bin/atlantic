@@ -23,6 +23,9 @@ if [ $SANE -ne 0 ]; then
     ls -l job
     echo "I: Contents:"
     cat job
+    if [ "x$ATLANTIC_PURGE" == "x" ]; then
+        rm -rf $WORKDIR
+    fi
     exit 1
 else
     echo "I: OK. Moving on with the build. - Sane: #$SANE"
@@ -39,15 +42,14 @@ echo "I: Arch:     $ATLANTIC_ARCH"
 echo "I: Compiler: $ATLANTIC_COMPILER"
 echo "I:"
 
-sbuild -d $ATLANTIC_SUITE -c $CHROOT_ID -A *dsc 2> stderr
+sbuild -d $ATLANTIC_SUITE -c $CHROOT_ID -A *dsc
 SANE=$?
 
 BUILD_LOG=$(readlink `find . -type l`)
+atlantic-parse-buildlog $BUILD_LOG > ${CHROOT_ID}.report
 
 mv $BUILD_LOG ${CHROOT_ID}.build.txt
 echo "$CHROOT_ID $SANE" > ${CHROOT_ID}.exit.txt
-
-atlantic-parse-buildlog $BUILD_LOG > ${CHROOT_ID}.report
 
 ROOT=$(atlantic-ssh $MONOMOY_BINARY get-key $MONOMOY_CONF results)
 ROOT=$(echo $ROOT | tr -d "\"")
@@ -56,14 +58,16 @@ PTH=${ROOT}/${ATLANTIC_BUILD_POOL}
 
 atlantic-ssh mkdir -p $PTH
 
-
-for fd in ${CHROOT_ID}.build.txt ${CHROOT_ID}.exit.txt; do
+for fd in ${CHROOT_ID}.build.txt ${CHROOT_ID}.exit.txt ${CHROOT_ID}.report; do
     scp -i $ATLANTIC_KEY $fd $ATLANTIC_LOGIN@$ATLANTIC_MASTER:$PTH
 done
 
 atlantic-ssh $MONOMOY_BINARY builder-done $ATLANTIC_BUILD_ID
+atlantic-ssh $MONOMOY_BINARY process-report $PTH/${CHROOT_ID}.report
 
 cd - > /dev/null
-rm -rf $WORKDIR
+if [ "x$ATLANTIC_PURGE" == "x" ]; then
+    rm -rf $WORKDIR
+fi
 
 exit $SANE

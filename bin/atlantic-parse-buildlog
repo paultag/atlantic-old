@@ -2,6 +2,11 @@
 
 import json
 import sys
+import os
+
+if not "ATLANTIC_BUILD_ID" in os.environ:
+    print "Atlantiv env sucks."
+    sys.exit(1)
 
 resp = {
     "warning": [],
@@ -26,5 +31,8 @@ for line in lines:
     f = line[:flag]
     if f in flags:
         resp[flags[f]].append(line.strip())
+
+job = os.environ['ATLANTIC_BUILD_ID']
+resp['build'] = job
 
 print json.dumps(resp)
