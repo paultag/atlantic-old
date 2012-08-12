@@ -21,7 +21,9 @@ env_mapping = {
 
 if len(sys.argv) > 1:
     bld = json.load(open(sys.argv[1], 'r'))
-    dist, compiler, arch = None, None, None
+    dist, compiler, arch = obj['default_dist'], obj['default_compiler'], \
+                           obj['default_arch']
+
     for requirement in bld['requirements']:
         if requirement in obj['arches']:
             arch = requirement
