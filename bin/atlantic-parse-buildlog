@@ -14,7 +14,9 @@ resp = {
     "info": [],
     "pedantic": [],
     "other": [],
-    "exp": []
+    "exp": [],
+    "build-warning": [],
+    "build-error": []
 }
 
 flags = {
@@ -26,8 +28,12 @@ flags = {
 }
 
 lookfor = {
-    "warning": "warning",
-    "error": "error"
+    "warning": "build-warning",
+    "error": "build-error"
+}
+
+false_pos = {
+    "error": ["-werror"]
 }
 
 flag = 3
@@ -41,6 +47,15 @@ for line in lines:
 
     for l in lookfor:
         if l in line.lower():
+            if l in false_pos:
+                found = False
+                for fp in false_pos[l]:
+                    if fp in line.lower():
+                        found = True
+
+                if found:
+                    continue
+
             resp[lookfor[l]].append(line.strip())
 
 job = os.environ['ATLANTIC_BUILD_ID']
