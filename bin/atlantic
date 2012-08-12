@@ -42,10 +42,18 @@ echo "I: Arch:     $ATLANTIC_ARCH"
 echo "I: Compiler: $ATLANTIC_COMPILER"
 echo "I:"
 
-sbuild -d $ATLANTIC_SUITE -c $CHROOT_ID -A *dsc
+sbuild \
+    -d $ATLANTIC_SUITE \
+    -c $CHROOT_ID \
+    -A *dsc
 SANE=$?
 
 BUILD_LOG=$(readlink `find . -type l`)
+
+# OK, add lintian.
+
+lintian -IE --pedantic *changes >> $BUILD_LOG
+
 atlantic-parse-buildlog $BUILD_LOG > ${CHROOT_ID}.report
 
 mv $BUILD_LOG ${CHROOT_ID}.build.txt

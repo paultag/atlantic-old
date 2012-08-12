@@ -13,14 +13,21 @@ resp = {
     "error": [],
     "info": [],
     "pedantic": [],
-    "other": []
+    "other": [],
+    "exp": []
 }
 
 flags = {
-    "W: ": "warning",
-    "E: ": "error",
-    "I: ": "info",
-    "P: ": "pedantic"
+    "w: ": "warning",
+    "e: ": "error",
+    "i: ": "info",
+    "p: ": "pedantic",
+    "x: ": "exp"
+}
+
+lookfor = {
+    "warning": "warning",
+    "error": "error"
 }
 
 flag = 3
@@ -28,9 +35,13 @@ flag = 3
 lines = open(sys.argv[1], 'r').readlines()
 
 for line in lines:
-    f = line[:flag]
+    f = line[:flag].lower()
     if f in flags:
         resp[flags[f]].append(line.strip())
+
+    for l in lookfor:
+        if l in line.lower():
+            resp[lookfor[l]].append(line.strip())
 
 job = os.environ['ATLANTIC_BUILD_ID']
 resp['build'] = job
