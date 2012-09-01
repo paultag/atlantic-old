@@ -1,5 +1,0 @@
-#!/bin/bash
-
-$(atlantic-env)
-
-ssh -l $ATLANTIC_LOGIN -i $ATLANTIC_KEY $ATLANTIC_MASTER $@
