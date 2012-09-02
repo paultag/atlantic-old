@@ -1,0 +1,10 @@
+#!/usr/bin/env python
+
+from atlantic.aws import start_image_by_tag
+import sys
+
+print "Finding & starting buildd machine."
+with start_image_by_tag("buildd", terminate=False) as instance:
+    print instance.dns_name
+    print "Holding for C-d"
+    sys.stdin.readlines()
