@@ -11,13 +11,14 @@ ec2 = boto.connect_ec2()
 def start_image_by_tag(image_name, terminate=True, owner="251399821276"):
     images = ec2.get_all_images(owners=[owner])
     for image in images:
-        if image.name == image_name:
-            ami = image.id
-            with start_server(
-                terminate=terminate,
-                image_id=ami
-            ) as instance:
-                yield instance
+        if "class" in image.tags:
+            if image.tags['class'] == image_name:
+                ami = image.id
+                with start_server(
+                    terminate=terminate,
+                    image_id=ami
+                ) as instance:
+                    yield instance
 
 
 @contextmanager
