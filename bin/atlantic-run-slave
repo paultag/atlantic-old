@@ -1,9 +1,0 @@
-#!/bin/bash
-
-function run {
-    ssh -i ~/.ssh/aws-prime.pem -l ubuntu -o StrictHostKeyChecking=no $@
-}
-
-run $1 "dget -x $2"
-run $1 'echo "hello"'
-run $1 "sbuild -A -v --source -j4 -d unstable -c unstable *dsc"
