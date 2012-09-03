@@ -1,0 +1,36 @@
+#!/bin/bash
+
+host=$1
+url=$2
+user=ubuntu
+remote=$user@$host
+
+
+function run {
+    ssh -i ~/.ssh/aws-prime.pem -l $user -o StrictHostKeyChecking=no $host $@
+}
+
+
+function copy {
+    scp -i ~/.ssh/aws-prime.pem -o StrictHostKeyChecking=no $@
+}
+
+
+function hangup {
+    run echo ""
+    ret=$?
+    if [ $ret -ne 0 ]; then
+        echo "Failure, retrying.."
+        sleep 1
+        hangup
+    else
+        echo "Success. Moving on."
+    fi
+}
+
+hangup
+
+run "dget -x $url"
+run "sbuild -d unstable -c unstable -A -v --source -j4 *dsc"
+
+echo "Alrighty."

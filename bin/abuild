@@ -1,0 +1,18 @@
+#!/usr/bin/env python
+
+from atlantic.aws import start_image_by_tag
+import subprocess
+import time
+import sys
+
+print "Building: %s" % (sys.argv[1])
+
+print "Finding & starting buildd machine."
+with start_image_by_tag("buildd", terminate=True) as instance:
+    print instance.dns_name
+
+    subprocess.check_call([
+        "./atlantic-minion",
+        instance.dns_name,
+        sys.argv[1]
+    ])
