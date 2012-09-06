@@ -3,9 +3,19 @@
 from atlantic.aws import start_image_by_tag
 import subprocess
 import time
+import json
 import sys
 
-print "Building: %s" % (sys.argv[1])
+def _load(path):
+    return json.load(open(path, 'r'))
+
+
+config = _load(sys.argv[1])
+build = _load(sys.argv[2])
+
+dget_url = "%s%s" % (config['pool_base'],
+                     build['dsc'])
+
 
 print "Finding & starting buildd machine."
 with start_image_by_tag("buildd", terminate=True) as instance:
@@ -14,5 +24,5 @@ with start_image_by_tag("buildd", terminate=True) as instance:
     subprocess.check_call([
         "./atlantic-minion",
         instance.dns_name,
-        sys.argv[1]
+        dget_url
     ])
