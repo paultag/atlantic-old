@@ -1,6 +1,13 @@
 #!/bin/bash
 json=$(tempfile)
 $(atlantic-env $json)
+RET=$?
+
+if [ $RET -ne 0 ]; then
+    echo "Krap on a krab."
+    exit 1
+fi
+
 monomoy builder-take localhost > $json
 abuild /srv/monomoy/config.json $json
 RET=$?

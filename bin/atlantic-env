@@ -9,6 +9,8 @@ def _load(path):
 
 
 config = _load(sys.argv[1])
+if config is None:
+    sys.exit(1)
 
 trans = {
     "_id": "ATLANTIC_BUILD_ID",
