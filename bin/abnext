@@ -1,4 +1,16 @@
 #!/bin/bash
 json=$(tempfile)
+$(atlantic-env $json)
 monomoy builder-take localhost > $json
-build /srv/monomoy/config.json $json
+abuild /srv/monomoy/config.json $json
+RET=$?
+
+monomoy builder-done localhost $ATLANTIC_BUILD_ID
+
+if [ $RET -ne 0 ]; then
+    echo "Build failure."
+    exit 1
+else
+    echo "Good to go."
+    exit 0
+fi

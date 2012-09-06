@@ -22,7 +22,7 @@ with start_image_by_tag("buildd", terminate=True) as instance:
     print instance.dns_name
 
     subprocess.check_call([
-        "./atlantic-minion",
+        "atlantic-minion",
         instance.dns_name,
         dget_url
     ])
